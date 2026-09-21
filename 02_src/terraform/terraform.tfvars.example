@@ -1,0 +1,32 @@
+# Copy this file to terraform.tfvars and fill in your SSH public key.
+# terraform.tfvars is gitignored so the key is not committed.
+
+project_name = "n8n-platform"
+environment  = "dev"
+location     = "eastus"
+
+# Explicit Resource Group name (GUID provided for this project).
+resource_group_name = "b23657ba-773b-43d2-96c9-85b96f23ee6c"
+
+# VM
+vm_size        = "Standard_B2s"
+ubuntu_sku     = "22_04-lts-gen2"
+admin_username = "azureuser"
+
+# Paste the FULL single line from your RSA .pub file, including the ssh-rsa prefix.
+# Azure Linux VMs here require RSA (not Ed25519).
+# PowerShell: Get-Content $env:USERPROFILE\.ssh\id_rsa.pub
+# Bash:       cat ~/.ssh/id_rsa.pub
+admin_ssh_public_key = "ssh-rsa AAAA...REPLACE_ME your_email@example.com"
+
+# Network access — replace 0.0.0.0/0 with YOUR public IP/32 before sharing the environment.
+# Example: ssh_allowed_cidrs = ["203.0.113.10/32"]
+ssh_allowed_cidrs = ["0.0.0.0/0"]
+n8n_allowed_cidrs = ["0.0.0.0/0"]
+assign_public_ip  = true
+enable_http_https = true
+n8n_port          = 5678
+
+# Storage
+os_disk_size_gb   = 64
+data_disk_size_gb = 32

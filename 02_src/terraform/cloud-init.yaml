@@ -1,0 +1,19 @@
+#cloud-config
+# Prepares the Linux VM so Rahaf's Bash/Docker scripts can take over.
+# Does NOT install Docker, Docker Compose, or n8n (those belong to the DevOps role).
+#
+# The extra data disk is attached after first boot (Azure Terraform pattern),
+# so it is not formatted here. Mount /dev/disk/azure/scsi1/lun0 at /data if needed.
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - ca-certificates
+  - curl
+  - apt-transport-https
+  - gnupg
+
+runcmd:
+  - mkdir -p /opt/n8n /data
+  - chmod 755 /opt/n8n /data

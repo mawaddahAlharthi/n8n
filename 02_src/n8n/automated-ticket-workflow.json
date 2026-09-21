@@ -1,0 +1,316 @@
+{
+  "name": "Automated Ticket Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Internal Support Ticket",
+        "formDescription": "Employee raises a support ticket. This is the local demo of the n8n automation.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Title",
+              "placeholder": "Cannot connect to VPN",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Description",
+              "fieldType": "textarea",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Requester",
+              "placeholder": "employee@company.com",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Team",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  { "option": "IT" },
+                  { "option": "Support" },
+                  { "option": "HR" }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Already resolved?",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  { "option": "No" },
+                  { "option": "Yes" }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1a2b3c4d-1111-2222-3333-444444444441",
+      "name": "1. Employee Raises Ticket",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [240, 340],
+      "webhookId": "internal-ticket-intake"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "t1",
+              "name": "ticketId",
+              "value": "={{ $now.toFormat('yyyyMMddHHmmss') }}",
+              "type": "string"
+            },
+            {
+              "id": "t2",
+              "name": "title",
+              "value": "={{ $json.Title }}",
+              "type": "string"
+            },
+            {
+              "id": "t3",
+              "name": "description",
+              "value": "={{ $json.Description }}",
+              "type": "string"
+            },
+            {
+              "id": "t4",
+              "name": "requester",
+              "value": "={{ $json.Requester }}",
+              "type": "string"
+            },
+            {
+              "id": "t5",
+              "name": "assignedTeam",
+              "value": "={{ $json.Team }}",
+              "type": "string"
+            },
+            {
+              "id": "t6",
+              "name": "status",
+              "value": "Open",
+              "type": "string"
+            },
+            {
+              "id": "t7",
+              "name": "resolved",
+              "value": "={{ $json['Already resolved?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "t8",
+              "name": "slaMinutes",
+              "value": 1,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1a2b3c4d-1111-2222-3333-444444444442",
+      "name": "2. Store Ticket Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [500, 340]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "status",
+              "value": "Assigned",
+              "type": "string"
+            },
+            {
+              "id": "a2",
+              "name": "assignmentNote",
+              "value": "={{ 'Assigned to the ' + $json.assignedTeam + ' team' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "1a2b3c4d-1111-2222-3333-444444444443",
+      "name": "3. Assign to Team",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [740, 340]
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "id": "1a2b3c4d-1111-2222-3333-444444444444",
+      "name": "4. SLA Timer (1 min demo)",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [980, 340],
+      "webhookId": "ticket-sla-wait"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.resolved }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1a2b3c4d-1111-2222-3333-444444444445",
+      "name": "5. Resolved?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [1220, 340]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "r1",
+              "name": "status",
+              "value": "Resolved",
+              "type": "string"
+            },
+            {
+              "id": "r2",
+              "name": "finalNote",
+              "value": "Ticket closed. SLA met.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "1a2b3c4d-1111-2222-3333-444444444446",
+      "name": "7. Update Status Resolved",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1480, 220]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e1",
+              "name": "status",
+              "value": "Escalated",
+              "type": "string"
+            },
+            {
+              "id": "e2",
+              "name": "finalNote",
+              "value": "SLA expired with no resolution. Escalated to supervisor.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "1a2b3c4d-1111-2222-3333-444444444447",
+      "name": "8. Escalate to Supervisor",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1480, 460]
+    }
+  ],
+  "connections": {
+    "1. Employee Raises Ticket": {
+      "main": [
+        [
+          {
+            "node": "2. Store Ticket Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Store Ticket Data": {
+      "main": [
+        [
+          {
+            "node": "3. Assign to Team",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Assign to Team": {
+      "main": [
+        [
+          {
+            "node": "4. SLA Timer (1 min demo)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4. SLA Timer (1 min demo)": {
+      "main": [
+        [
+          {
+            "node": "5. Resolved?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5. Resolved?": {
+      "main": [
+        [
+          {
+            "node": "7. Update Status Resolved",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "8. Escalate to Supervisor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "active": false
+}
