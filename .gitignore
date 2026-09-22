@@ -1,0 +1,48 @@
+# Secrets and local environment
+.env
+.env.local
+*.env
+!.env.example
+!**/.env.example
+
+# Terraform local values, state, and plugin cache
+.terraform/
+.terraform.lock.hcl.bak
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+tfplan
+*.tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Keys and credentials
+*.pem
+*.key
+id_rsa
+id_ed25519
+*.p12
+*.pfx
+
+# Application / n8n secrets (never commit)
+N8N_ENCRYPTION_KEY
+**/credentials.json
+
+# Editor and OS
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+*.log
+
+# Backup and temporary files
+*.bak
+*.tmp
+tmp/
+.cache/

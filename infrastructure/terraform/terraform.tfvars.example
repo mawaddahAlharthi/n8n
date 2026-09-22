@@ -1,0 +1,21 @@
+# Copy this file to terraform.tfvars if you need to override defaults.
+# terraform.tfvars is gitignored — do not commit it.
+#
+#   copy terraform.tfvars.example terraform.tfvars
+#
+# No passwords, tokens, or encryption keys belong in this file.
+
+environment_type = "local"
+application      = "SIOSE"
+team             = "NEX"
+deployment_model = "docker-compose"
+timezone         = "Asia/Riyadh"
+
+# Container port stays 5678. Change n8n_host_port only if 5678 is already
+# taken on the laptop (then tell Rahaf to map 5679:5678 in Compose).
+n8n_internal_port = 5678
+n8n_host_port     = 5678
+n8n_bind_address  = "127.0.0.1"
+
+postgres_internal_port     = 5432
+postgres_external_exposure = false
