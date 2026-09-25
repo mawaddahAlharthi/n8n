@@ -1,9 +1,14 @@
 # Secrets and local environment
 .env
+**/.env
 .env.local
 *.env
+
+# Safe environment templates
 !.env.example
 !**/.env.example
+!02_src/deployment/env/
+!02_src/deployment/env/.env.example
 
 # Terraform local values, state, and plugin cache
 .terraform/
@@ -29,8 +34,7 @@ id_ed25519
 *.p12
 *.pfx
 
-# Application / n8n secrets (never commit)
-N8N_ENCRYPTION_KEY
+# Application / n8n secret files
 **/credentials.json
 
 # Editor and OS
