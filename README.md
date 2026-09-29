@@ -42,3 +42,32 @@ n8n is available at:
 
 ```text
 http://localhost:5678
+
+---
+
+## Automation Workflow (Bayan)
+
+The automation layer provides the support ticket workflow implemented in n8n.
+
+Workflow definition:
+
+[02_src/n8n/support-ticket-workflow.json](02_src/n8n/support-ticket-workflow.json)
+
+### Workflow
+
+The workflow includes:
+
+- IT support ticket intake
+- Automatic ticket ID generation
+- Category-based support team assignment
+- PostgreSQL ticket storage and status updates
+- 4-hour SLA monitoring
+- Resolved status check
+- Automatic escalation when the SLA is exceeded
+- Supervisor email notification
+- Reassignment and status re-check loop
+- Final resolution update
+
+### Credentials
+
+PostgreSQL and Gmail credentials are configured securely in n8n and are not stored directly in the workflow file.
