@@ -1,6 +1,6 @@
-#  Internal Support Ticket Automation Platform (n8n on Azure)
+# Internal Support Ticket Automation Platform (n8n on Azure)
 
-Team Repository for **Project #8: Internal Workflow Automation Platform** (SIOSE / Team NEX).
+Team Repository for Project #8: Internal Workflow Automation Platform (SIOSE / Team Nexflow).
 
 [![Azure](https://img.shields.io/badge/Provider-Microsoft%20Azure-0089D6?logo=microsoftazure)](https://azure.microsoft.com/)
 [![Terraform](https://img.shields.io/badge/IaC-Terraform%20v1.6+-844FBA?logo=terraform)](https://www.terraform.io/)
@@ -12,12 +12,12 @@ An end-to-end automated internal workflow platform built to streamline IT suppor
 
 ---
 
-##  Executive Summary
-Manual handling of support tickets leads to delayed response times and lack of operational visibility. This solution automates the ticket lifecycle using a single-host, highly secure Azure infrastructure provisioned via Terraform, orchestrated via Docker Compose, and automated with n8n workflow pipelines.
+## Executive Summary
+Manual handling of support tickets leads to delayed response times and lack of operational visibility. SIOSE automates the ticket lifecycle through an n8n workflow engine, validated locally via Docker Compose and provisioned for cloud deployment on Microsoft Azure via Terraform.
 
 ---
 
-##  Core Modules & Team Roles
+## Core Modules & Team Roles
 
 | Module | Owner | Core Responsibilities | Quick Link |
 | :--- | :--- | :--- | :--- |
@@ -28,7 +28,7 @@ Manual handling of support tickets leads to delayed response times and lack of o
 
 ---
 
-##  Repository Layout
+## Repository Layout
 
 ```text
 .
@@ -43,30 +43,30 @@ Manual handling of support tickets leads to delayed response times and lack of o
 
 ---
 
-##  Security & Quick Setup
+## Security & Quick Setup
 
 ### Security Principles
 * **Zero Hardcoded Secrets:** Environments managed via `.env` and n8n credentials.
 * **SSH Key Auth Only:** Password authentication is completely disabled on the VM.
 * **Git Shielding:** Sensitive states (`.tfstate`) and secrets strictly ignored in `.gitignore`.
 
-### Quick Deployment
-1. **Provision Infrastructure:**
+### Quick Deployment Guide
+1. **Local Demo (Docker Compose):**
    ```bash
-   cd 02_src/infrastructure/terraform && terraform init && terraform apply
+   cd 02_src/deployment
+   docker-compose up -d
    ```
-2. **Deploy Stack:**
+2. **Cloud Provisioning (Azure Infrastructure):**
    ```bash
-   ssh -i ~/.ssh/id_ed25519 azureadmin@<VM_PUBLIC_IP>
-   bash 02_src/deployment/scripts/01_install_dependencies.sh
-   bash 02_src/deployment/scripts/04_start_n8n.sh
+   cd 02_src/infrastructure/terraform
+   terraform init && terraform apply
    ```
-3. **Import Pipeline:**
-   Access `http://<VM_PUBLIC_IP>:5678` and import `01_data/support-ticket-workflow.json`.
+3. **Import Workflow:**
+   Access n8n engine and import `01_data/support-ticket-workflow.json`.
 
 ---
 
-##  Documentation & Validation
+## Documentation & Validation
 For detailed setup instructions, troubleshooting, and security details, refer to:
 * [`03_docs/setup-guide.md`](03_docs/setup-guide.md)
 * [`03_docs/security-and-access.md`](03_docs/security-and-access.md)
