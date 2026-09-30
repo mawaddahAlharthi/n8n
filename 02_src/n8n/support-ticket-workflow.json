@@ -1,0 +1,1327 @@
+{
+  "name": "Support Ticket Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "IT Support Ticket",
+        "formDescription": "Submit a support request and our team will review your issue.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Requester Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Ticket Title",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Description",
+              "fieldType": "textarea",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Category",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Hardware"
+                  },
+                  {
+                    "option": "Software"
+                  },
+                  {
+                    "option": "Network"
+                  },
+                  {
+                    "option": "Account & Access"
+                  },
+                  {
+                    "option": "Other"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Priority",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "High"
+                  },
+                  {
+                    "option": "Medium"
+                  },
+                  {
+                    "option": "Low"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "15f0575e-b5c0-4d95-9c69-95c2f4ff8f2f",
+      "name": "On form submission",
+      "webhookId": "87e6dfef-0209-418a-aabc-f5b7b16cb2cb"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7760312c-fe41-42ab-84bb-9f2b7a86c21f",
+              "name": "status",
+              "value": "Open",
+              "type": "string"
+            },
+            {
+              "id": "54674a52-80b3-4fde-8d62-d60a0ec6c1b0",
+              "name": "ticket_id",
+              "value": "={{ 'TKT-' + $now.toFormat('yyyyLLdd-HHmmss') }}",
+              "type": "string"
+            },
+            {
+              "id": "4f0b90a1-ea6a-4a7c-9970-45586368f1e6",
+              "name": "created_at",
+              "value": "={{ $json.submittedAt }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "e7e8e322-0320-44f3-857d-f6d2e4f955f0",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Category }}",
+                    "rightValue": "Hardware",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7f77a6d6-9f88-4b30-a8a0-ecfd344079bc"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Hardware"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "85e49f3d-1692-43c0-b865-be2db3c01fe5",
+                    "leftValue": "={{ $json.Category }}",
+                    "rightValue": "Software",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Software"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "bcd0a090-a10e-4cda-8365-9ef4af652e85",
+                    "leftValue": "={{ $json.Category }}",
+                    "rightValue": "Network",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Network"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "258eb089-7980-4846-b26e-c7cde5e9cf4a",
+                    "leftValue": "={{ $json.Category }}",
+                    "rightValue": "Account & Access",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Account & Access"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "7615e875-07ad-4778-b6bf-1872221fde46",
+                    "leftValue": "={{ $json.Category }}",
+                    "rightValue": "Other",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Other"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        0
+      ],
+      "id": "b95d680d-5b16-46d6-b286-934cebe7540f",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "amount": 4,
+        "unit": "hours"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1248,
+        32
+      ],
+      "id": "c6d1ff21-ab61-4321-84f6-c2b116939c70",
+      "name": "Wait",
+      "webhookId": "72d6e177-7787-421d-bc6a-50e4608f8fa6"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9a9e0217-f1f7-495d-b0af-956a96e4f8e7",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "Resolved",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1776,
+        -16
+      ],
+      "id": "960b06d4-312e-4138-937c-d746b034ef46",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tickets",
+          "mode": "list",
+          "cachedResultName": "tickets"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ticket_id": "={{ $json.ticket_id }}",
+            "requester_name": "={{ $json[\"Requester Name\"] }}",
+            "email": "={{ $json.Email }}",
+            "ticket_title": "={{ $json[\"Ticket Title\"] }}",
+            "description": "={{ $json.Description }}",
+            "category": "={{ $json.Category }}",
+            "priority": "={{ $json.Priority }}",
+            "status": "={{ $json.status }}",
+            "assigned_team": "={{ $json.assigned_team }}",
+            "created_at": "={{ $json.created_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ticket_id",
+              "displayName": "ticket_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "requester_name",
+              "displayName": "requester_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ticket_title",
+              "displayName": "ticket_title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "assigned_team",
+              "displayName": "assigned_team",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        992,
+        32
+      ],
+      "id": "99be0234-7fe5-499b-a90c-552d7b77ee5e",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "uiP6q6g5nnYSDBwG",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tickets",
+          "mode": "list",
+          "cachedResultName": "tickets"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "ticket_id",
+              "value": "={{ $json.ticket_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        1536,
+        32
+      ],
+      "id": "c749f8b1-3aab-4be1-a80a-8d0bf2e5cfe3",
+      "name": "Select rows from a table",
+      "credentials": {
+        "postgres": {
+          "id": "uiP6q6g5nnYSDBwG",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "03032f32-d9bb-4100-875c-c38ef85a8328",
+              "name": "status",
+              "value": "Escalated",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1952,
+        0
+      ],
+      "id": "f72e4bb3-f2d2-46d7-a554-a56560686d0e",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tickets",
+          "mode": "list",
+          "cachedResultName": "tickets"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ticket_id": "={{ $json.ticket_id }}",
+            "status": "={{ $json.status }}"
+          },
+          "matchingColumns": [
+            "ticket_id"
+          ],
+          "schema": [
+            {
+              "id": "ticket_id",
+              "displayName": "ticket_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "requester_name",
+              "displayName": "requester_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ticket_title",
+              "displayName": "ticket_title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "assigned_team",
+              "displayName": "assigned_team",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        2176,
+        0
+      ],
+      "id": "47c73d03-2ac4-4a48-8acf-0671cf719909",
+      "name": "Update rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "uiP6q6g5nnYSDBwG",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "supervisor@example.com",
+        "subject": "=🚨 Ticket Escalated - {{ $json.ticket_id }}",
+        "message": "=<h2>🚨 Support Ticket Escalation</h2>\n\n<p>A support ticket has exceeded its SLA and requires attention.</p>\n\n<p><strong>Ticket ID:</strong> {{ $json.ticket_id }}</p>\n<p><strong>Title:</strong> {{ $json.ticket_title }}</p>\n<p><strong>Priority:</strong> {{ $json.priority }}</p>\n<p><strong>Category:</strong> {{ $json.category }}</p>\n<p><strong>Assigned Team:</strong> {{ $json.assigned_team }}</p>\n<p><strong>Status:</strong> {{ $json.status }}</p>\n\n<p>Please review and take the appropriate action.</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2400,
+        0
+      ],
+      "id": "549d405a-7df4-411e-bc8a-6624bc04b5c2",
+      "name": "Send a message",
+      "webhookId": "c4db1afb-cb85-4851-869d-1be2708302cc",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "WkKNRzDBXeDn7MiX",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "937bec24-0051-4fad-90b4-19e9f3232916",
+              "name": "assigned_team",
+              "value": "Hardware Support",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        688,
+        -368
+      ],
+      "id": "9d6c877d-84e4-4c6e-b591-8c6ed0e4ede8",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4f292a23-843e-4d14-bc5b-08e3de22d978",
+              "name": "assigned_team",
+              "value": "Network Support",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        688,
+        -32
+      ],
+      "id": "693943c9-cb9a-4ec2-8a6c-bb6b0f31f043",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b4c24b70-ee0b-49b0-84cb-6c96e9691dc9",
+              "name": "assigned_team",
+              "value": "Account Support",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        688,
+        128
+      ],
+      "id": "b6efb3dd-2d3c-4d6d-a9b5-9ee8b10f1da1",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "967a5692-be5f-46e6-988b-b17cf3706b8e",
+              "name": "assigned_team",
+              "value": "General Support",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        688,
+        304
+      ],
+      "id": "8b166db2-3e92-4f3c-bad4-0c8441f726dc",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "86422542-b398-487e-b592-0ce26d6beb56",
+              "name": "assigned_team",
+              "value": "Software Support",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        688,
+        -208
+      ],
+      "id": "5de89531-1625-4d1d-8a07-e9c5595e1a0c",
+      "name": "Edit Fields6"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ae8c8b18-5df4-40d3-b2f5-882dd99d33d8",
+              "name": "status",
+              "value": "Resolved",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1952,
+        -192
+      ],
+      "id": "48c14fc1-5316-4ff8-9ebf-d840d405ba8f",
+      "name": "Edit Fields7"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tickets",
+          "mode": "list",
+          "cachedResultName": "tickets"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ticket_id": "={{ $json.ticket_id }}",
+            "status": "={{ $json.status }}"
+          },
+          "matchingColumns": [
+            "ticket_id"
+          ],
+          "schema": [
+            {
+              "id": "ticket_id",
+              "displayName": "ticket_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "requester_name",
+              "displayName": "requester_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ticket_title",
+              "displayName": "ticket_title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "assigned_team",
+              "displayName": "assigned_team",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        2176,
+        -192
+      ],
+      "id": "d600b199-ff60-47fd-a6ac-9731c8dc5651",
+      "name": "Update rows in a table1",
+      "credentials": {
+        "postgres": {
+          "id": "uiP6q6g5nnYSDBwG",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2624,
+        0
+      ],
+      "id": "672a217a-d2ef-496c-86c1-ba5eb1971cec",
+      "name": "Wait1",
+      "webhookId": "9fe6b60f-8f26-4c6f-8ba9-7e2065c5c6d7"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tickets",
+          "mode": "list",
+          "cachedResultName": "tickets"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "ticket_id",
+              "value": "={{ $('Update rows in a table').item.json.ticket_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        2848,
+        0
+      ],
+      "id": "7d1cc9cd-4058-4dff-a9df-928e481f2e04",
+      "name": "Select rows from a table1",
+      "credentials": {
+        "postgres": {
+          "id": "uiP6q6g5nnYSDBwG",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c33cc0d9-45ba-40e6-beea-5d3438b9750d",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "Reassigned",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3088,
+        352
+      ],
+      "id": "5e7eb2e1-372e-4901-8b33-134b0d853c30",
+      "name": "If1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Select rows from a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert rows in a table": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select rows from a table": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields7",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Update rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update rows in a table": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields6": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields7": {
+      "main": [
+        [
+          {
+            "node": "Update rows in a table1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Select rows from a table1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select rows from a table1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "9a5e6bbc-1a03-4117-a14c-1ea7545bb647",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1633797c52889a00cfd4ea061754671be5fa8196addcf1d63a9212a303ed06c2"
+  },
+  "nodeGroups": [],
+  "id": "dY0LOuBLVp607x3j",
+  "tags": []
+}

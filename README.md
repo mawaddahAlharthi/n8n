@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ```markdown
 # 🚀 Internal Support Ticket Automation Platform (n8n on Azure)
 
@@ -127,6 +126,4 @@ Designed and validated as part of Capstone **Project #8: Internal Workflow Autom
 
 ```
 
-=======
-# n.8.n
->>>>>>> c4ebdb8f2df9f303672d0c0afb9af7e75a75eada
+
