@@ -1,5 +1,5 @@
 ```markdown
-# 🚀 Internal Support Ticket Automation Platform (n8n on Azure)
+#  Internal Support Ticket Automation Platform (n8n on Azure)
 
 Team Repository for **Project #8: Internal Workflow Automation Platform** (SIOSE / Team NEX).
 
@@ -14,12 +14,12 @@ An end-to-end automated internal workflow platform built to streamline IT suppor
 
 ---
 
-## 📌 Executive Summary
+##  Executive Summary
 Manual handling of support tickets leads to delayed response times and lack of operational visibility. This solution automates the ticket lifecycle using a single-host, highly secure Azure infrastructure provisioned via Infrastructure as Code (Terraform), orchestrated via Docker Compose, and automated with n8n workflow pipelines.
 
 ---
 
-## 📐 High-Level Architecture & Data Flow
+##  High-Level Architecture & Data Flow
 
 ```text
 [ Form Intake / Webhook ] 
@@ -39,7 +39,7 @@ Manual handling of support tickets leads to delayed response times and lack of o
 
 ---
 
-## ⚙️ Core Modules & Team Roles
+##  Core Modules & Team Roles
 
 ### 1. Infrastructure (Faisal)
 * Provisions host infrastructure and networking on Microsoft Azure via Terraform.
@@ -66,7 +66,7 @@ Manual handling of support tickets leads to delayed response times and lack of o
 
 ---
 
-## 📂 Repository Layout
+##  Repository Layout
 
 ```text
 .
@@ -87,7 +87,7 @@ Manual handling of support tickets leads to delayed response times and lack of o
 
 ---
 
-## 🔒 Security & Compliance Controls
+##  Security & Compliance Controls
 
 * **Zero Hardcoded Secrets:** Environments and credentials managed strictly via `.env` and `n8n credentials`.
 * **SSH Key Authentication:** Password login disabled (`disable_password_authentication = true`).
@@ -96,7 +96,7 @@ Manual handling of support tickets leads to delayed response times and lack of o
 
 ---
 
-## 🚀 Quick Deployment Guide
+##  Quick Deployment Guide
 
 1. **Provision Azure Infrastructure:**
 ```bash
