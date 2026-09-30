@@ -1,4 +1,3 @@
-```markdown
 #  Internal Support Ticket Automation Platform (n8n on Azure)
 
 Team Repository for **Project #8: Internal Workflow Automation Platform** (SIOSE / Team NEX).
@@ -40,7 +39,6 @@ Manual handling of support tickets leads to delayed response times and lack of o
 ├── 03_docs/            # Operational guides (Setup, Security, Troubleshooting)
 ├── 03_assets/          # Architectural diagrams and demo assets
 └── README.md           # Master repository documentation
-
 ```
 
 ---
@@ -48,41 +46,28 @@ Manual handling of support tickets leads to delayed response times and lack of o
 ##  Security & Quick Setup
 
 ### Security Principles
-
 * **Zero Hardcoded Secrets:** Environments managed via `.env` and n8n credentials.
 * **SSH Key Auth Only:** Password authentication is completely disabled on the VM.
 * **Git Shielding:** Sensitive states (`.tfstate`) and secrets strictly ignored in `.gitignore`.
 
 ### Quick Deployment
-
 1. **Provision Infrastructure:**
-```bash
-cd 02_src/infrastructure/terraform && terraform init && terraform apply
-
-```
-
-
+   ```bash
+   cd 02_src/infrastructure/terraform && terraform init && terraform apply
+   ```
 2. **Deploy Stack:**
-```bash
-ssh -i ~/.ssh/id_ed25519 azureadmin@<VM_PUBLIC_IP>
-bash 02_src/deployment/scripts/01_install_dependencies.sh
-bash 02_src/deployment/scripts/04_start_n8n.sh
-
-```
-
-
+   ```bash
+   ssh -i ~/.ssh/id_ed25519 azureadmin@<VM_PUBLIC_IP>
+   bash 02_src/deployment/scripts/01_install_dependencies.sh
+   bash 02_src/deployment/scripts/04_start_n8n.sh
+   ```
 3. **Import Pipeline:**
-Access `http://<VM_PUBLIC_IP>:5678` and import `01_data/support-ticket-workflow.json`.
+   Access `http://<VM_PUBLIC_IP>:5678` and import `01_data/support-ticket-workflow.json`.
 
 ---
 
 ##  Documentation & Validation
-
 For detailed setup instructions, troubleshooting, and security details, refer to:
-
-* [`03_docs/setup-guide.md`](https://www.google.com/search?q=03_docs/setup-guide.md)
-* [`03_docs/security-and-access.md`](https://www.google.com/search?q=03_docs/security-and-access.md)
-* [`03_docs/troubleshooting.md`](https://www.google.com/search?q=03_docs/troubleshooting.md)
-
-
-
+* [`03_docs/setup-guide.md`](03_docs/setup-guide.md)
+* [`03_docs/security-and-access.md`](03_docs/security-and-access.md)
+* [`03_docs/troubleshooting.md`](03_docs/troubleshooting.md)
