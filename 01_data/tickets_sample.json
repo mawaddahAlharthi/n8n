@@ -1,0 +1,26 @@
+[
+  {
+    "ticket_id": "TKT-20260930-1001",
+    "requester_name": "Mawaddah Alharthi",
+    "email": "mawaddah@example.com",
+    "ticket_title": "Network Connection Issue",
+    "description": "Unable to access the internal database server.",
+    "category": "Network",
+    "priority": "High",
+    "status": "Open",
+    "assigned_team": "Network Support",
+    "created_at": "2026-09-30T10:00:00Z"
+  },
+  {
+    "ticket_id": "TKT-20260930-1002",
+    "requester_name": "Ahmed Ali",
+    "email": "ahmed@example.com",
+    "ticket_title": "Laptop Screen Flicker",
+    "description": "Display flickers when connecting to external monitor.",
+    "category": "Hardware",
+    "priority": "Medium",
+    "status": "Resolved",
+    "assigned_team": "Hardware Support",
+    "created_at": "2026-09-30T11:30:00Z"
+  }
+]
